@@ -11,11 +11,11 @@ import (
 
 const (
 	// 微信服务器推送过来的消息类型
-	MsgTypeText     = "text"     // 文本消息
-	MsgTypeImage    = "image"    // 图片消息
-	MsgTypeVoice    = "voice"    // 语音消息
-	MsgTypeVideo    = "video"    // 视频消息
-	MsgTypeLocation = "location" // 地理位置消息
+	MsgTypeText       = "text"       // 文本消息
+	MsgTypeImage      = "image"      // 图片消息
+	MsgTypeVoice      = "voice"      // 语音消息
+	MsgTypeVideo      = "video"      // 视频消息
+	MsgTypeLocation   = "location"   // 地理位置消息
 	MsgTypeShortVideo = "shortvideo" // 小视频消息
 
 )

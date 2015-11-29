@@ -46,22 +46,22 @@ var _ AccessTokenServer = (*DefaultAccessTokenServer)(nil)
 //  2. 因为 DefaultAccessTokenServer 同时也是一个简单的中控服务器, 而不是仅仅实现 AccessTokenServer 接口,
 //     所以整个系统只能存在一个 DefaultAccessTokenServer 实例!
 type DefaultAccessTokenServer struct {
-	corpid          string
-	providerSecret  string
-	httpClient      *http.Client
+	corpid         string
+	providerSecret string
+	httpClient     *http.Client
 
 	resetTickerChan chan time.Duration // 用于重置 tokenDaemon 里的 ticker
 
-	tokenGet        struct {
-		                sync.Mutex
-		                LastTokenInfo accessTokenInfo // 最后一次成功从微信服务器获取的 provider_access_token 信息
-		                LastTimestamp int64           // 最后一次成功从微信服务器获取 provider_access_token 的时间戳
-	                }
+	tokenGet struct {
+		sync.Mutex
+		LastTokenInfo accessTokenInfo // 最后一次成功从微信服务器获取的 provider_access_token 信息
+		LastTimestamp int64           // 最后一次成功从微信服务器获取 provider_access_token 的时间戳
+	}
 
-	tokenCache      struct {
-		                sync.RWMutex
-		                Token string
-	                }
+	tokenCache struct {
+		sync.RWMutex
+		Token string
+	}
 }
 
 // 创建一个新的 DefaultAccessTokenServer.
@@ -71,8 +71,8 @@ func NewDefaultAccessTokenServer(corpid, providerSecret string, clt *http.Client
 		clt = http.DefaultClient
 	}
 	srv = &DefaultAccessTokenServer{
-		corpid:         corpid,
-		providerSecret:     providerSecret,
+		corpid:          corpid,
+		providerSecret:  providerSecret,
 		httpClient:      clt,
 		resetTickerChan: make(chan time.Duration),
 	}
@@ -107,7 +107,7 @@ func (srv *DefaultAccessTokenServer) TokenRefresh() (token string, err error) {
 }
 
 func (srv *DefaultAccessTokenServer) tokenDaemon(tickDuration time.Duration) {
-	NEW_TICK_DURATION:
+NEW_TICK_DURATION:
 	ticker := time.NewTicker(tickDuration)
 
 	for {
@@ -161,7 +161,7 @@ func (srv *DefaultAccessTokenServer) getToken() (token accessTokenInfo, cached b
 		Corpid         string `json:"corpid"`
 		ProviderSecret string `json:"provider_secret"`
 	}{
-		Corpid:     srv.corpid,
+		Corpid:         srv.corpid,
 		ProviderSecret: srv.providerSecret,
 	}
 
@@ -175,7 +175,6 @@ func (srv *DefaultAccessTokenServer) getToken() (token accessTokenInfo, cached b
 		srv.tokenCache.Unlock()
 		return
 	}
-
 
 	requestBytes := requestBuf.Bytes()
 	url := "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token"

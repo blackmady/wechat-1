@@ -25,10 +25,10 @@ import (
 //
 //  MultiAgentServerFrontend 并发安全, 可以在运行中动态增加和删除 AgentServer.
 type MultiChatServerFrontend struct {
-	errHandler     ErrorHandler
-	interceptor    Interceptor
+	errHandler  ErrorHandler
+	interceptor Interceptor
 
-	rwmutex        sync.RWMutex
+	rwmutex       sync.RWMutex
 	chatServerMap map[string]ChatServer
 }
 
@@ -36,16 +36,16 @@ type MultiChatServerFrontend struct {
 //  urlAgentServerQueryName: 回调 URL 上参数名, 这个参数的值就是索引 AgentServer 的 key
 //  errHandler:              错误处理 handler, 可以为 nil
 //  interceptor:             拦截器, 可以为 nil
-func NewMultiChatServerFrontend( errHandler ErrorHandler, interceptor Interceptor) *MultiChatServerFrontend {
+func NewMultiChatServerFrontend(errHandler ErrorHandler, interceptor Interceptor) *MultiChatServerFrontend {
 
 	if errHandler == nil {
 		errHandler = DefaultErrorHandler
 	}
 
 	return &MultiChatServerFrontend{
-		errHandler:              errHandler,
-		interceptor:             interceptor,
-		chatServerMap:          make(map[string]ChatServer),
+		errHandler:    errHandler,
+		interceptor:   interceptor,
+		chatServerMap: make(map[string]ChatServer),
 	}
 }
 
@@ -85,7 +85,6 @@ func (frontend *MultiChatServerFrontend) ServeHTTP(w http.ResponseWriter, r *htt
 	if interceptor := frontend.interceptor; interceptor != nil && !interceptor.Intercept(w, r, queryValues) {
 		return
 	}
-
 
 	ServeHTTP(w, r, queryValues, frontend)
 }

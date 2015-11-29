@@ -6,9 +6,9 @@
 package chat
 
 import (
+	"fmt"
 	"net/http"
 	"sync"
-	"fmt"
 )
 
 var _ MessageHandler = (*MessageServeMux)(nil)
@@ -142,7 +142,7 @@ func (mux *MessageServeMux) ServeMessage(w http.ResponseWriter, r *Request) {
 	w.Write([]byte(fmt.Sprintf("%d", r.MixedMsg.PackageId)))
 
 	for _, item := range r.MixedMsg.Item {
-		r.MixedMsg.CurrentItem=item
+		r.MixedMsg.CurrentItem = item
 
 		if msgType := item.MsgType; msgType == "event" {
 			handler := mux.getEventHandler(item.Event)

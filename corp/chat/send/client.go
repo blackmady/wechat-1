@@ -6,21 +6,17 @@
 package send
 
 import (
-	"net/http"
 	"errors"
+	"net/http"
 
 	"github.com/chanxuehong/wechat/corp"
-
 )
-
 
 type Client corp.Client
 
 func NewClient(srv corp.AccessTokenServer, clt *http.Client) *Client {
 	return (*Client)(corp.NewClient(srv, clt))
 }
-
-
 
 // 创建会话
 func (clt *Client) Create(chatInfo *ChatInfo) (err error) {
@@ -45,7 +41,7 @@ func (clt *Client) GetChatInfo(chatId string) (chatInfo ChatInfo, err error) {
 	}
 
 	incompleteURL := "https://qyapi.weixin.qq.com/cgi-bin/chat/get?chatid=" +
-	chatId + "&access_token="
+		chatId + "&access_token="
 
 	if err = ((*corp.Client)(clt)).GetJSON(incompleteURL, &result); err != nil {
 		return
@@ -54,11 +50,10 @@ func (clt *Client) GetChatInfo(chatId string) (chatInfo ChatInfo, err error) {
 		err = &result.Error
 		return
 	}
-	chatInfo=result.ChatInfo
+	chatInfo = result.ChatInfo
 	return
 
 }
-
 
 // 退出会话
 func (clt *Client) Quit(chatId, opUser string) (err error) {
@@ -66,8 +61,8 @@ func (clt *Client) Quit(chatId, opUser string) (err error) {
 		ChatId string `json:"chatid"`
 		OpUser string `json:"op_user"`
 	}{
-		ChatId  :    chatId,
-		OpUser  :   opUser,
+		ChatId: chatId,
+		OpUser: opUser,
 	}
 
 	var result struct {
@@ -85,8 +80,6 @@ func (clt *Client) Quit(chatId, opUser string) (err error) {
 	}
 	return
 }
-
-
 
 // 更新会话
 func (clt *Client) Update(updateChatInfo *UpdateInfo) (err error) {
@@ -106,7 +99,6 @@ func (clt *Client) Update(updateChatInfo *UpdateInfo) (err error) {
 	return
 }
 
-
 //清除消息未读状态
 func (clt *Client) ClearNotify(request *ClearNotify) (err error) {
 	var result struct {
@@ -125,16 +117,14 @@ func (clt *Client) ClearNotify(request *ClearNotify) (err error) {
 	return
 }
 
-
 //设置成员新消息免打扰
 // 成员新消息免打扰参数，数组，最大支持10000个成员
 func (clt *Client) SetMute(userMuteList []*UserMute) (invaliduser []string, err error) {
 	var request = struct {
 		UserMuteList []*UserMute `json:"user_mute_list"`
 	}{
-		UserMuteList:userMuteList,
+		UserMuteList: userMuteList,
 	}
-
 
 	var result struct {
 		corp.Error
@@ -150,18 +140,14 @@ func (clt *Client) SetMute(userMuteList []*UserMute) (invaliduser []string, err 
 		err = &result.Error
 		return
 	}
-	invaliduser=result.Invaliduser
+	invaliduser = result.Invaliduser
 	return
 }
-
-
-
 
 //发送消息
 func (clt *Client) send(msg interface{}) (err error) {
 	var result struct {
 		corp.Error
-
 	}
 	incompleteURL := "https://qyapi.weixin.qq.com/cgi-bin/chat/send?access_token="
 	if err = ((*corp.Client)(clt)).PostJSON(incompleteURL, msg, &result); err != nil {
@@ -174,7 +160,6 @@ func (clt *Client) send(msg interface{}) (err error) {
 	}
 	return
 }
-
 
 func (clt *Client) SendText(msg *Text) (err error) {
 	if msg == nil {
@@ -215,4 +200,3 @@ func (clt *Client) SendFile(msg *File) (err error) {
 	}
 	return clt.send(msg)
 }
-

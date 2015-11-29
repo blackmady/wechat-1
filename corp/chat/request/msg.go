@@ -10,34 +10,32 @@ import (
 )
 
 const (
-// 微信服务器推送过来的消息类型
-	MsgTypeText = "text"     // 文本消息
-	MsgTypeImage = "image"    // 图片消息
+	// 微信服务器推送过来的消息类型
+	MsgTypeText  = "text"  // 文本消息
+	MsgTypeImage = "image" // 图片消息
 )
 
 type Text struct {
-	XMLName struct {} `xml:"xml" json:"-"`
+	XMLName struct{} `xml:"xml" json:"-"`
 
 	chat.ItemHeader
 	chat.Receiver
-	MsgId   int64   `xml:"MsgId" json:"MsgId"`     //消息id, 64位整型
-	Content string  `xml:"Content" json:"Content"` //消息内容，支持表情
+	MsgId   int64  `xml:"MsgId" json:"MsgId"`     //消息id, 64位整型
+	Content string `xml:"Content" json:"Content"` //消息内容，支持表情
 }
 
 func GetText(msg *chat.MixedMessage) *Text {
 	return &Text{
-		ItemHeader:msg.CurrentItem.ItemHeader,
-		Receiver:msg.CurrentItem.Receiver,
-		MsgId:msg.CurrentItem.MsgId,
-		Content:msg.CurrentItem.Content,
+		ItemHeader: msg.CurrentItem.ItemHeader,
+		Receiver:   msg.CurrentItem.Receiver,
+		MsgId:      msg.CurrentItem.MsgId,
+		Content:    msg.CurrentItem.Content,
 	}
-
 
 }
 
-
 type Image struct {
-	XMLName struct {} `xml:"xml" json:"-"`
+	XMLName struct{} `xml:"xml" json:"-"`
 	chat.ItemHeader
 	chat.Receiver
 
@@ -48,12 +46,11 @@ type Image struct {
 
 func GetImage(msg *chat.MixedMessage) *Image {
 	return &Image{
-		ItemHeader:msg.CurrentItem.ItemHeader,
-		Receiver:msg.CurrentItem.Receiver,
-		MsgId:msg.CurrentItem.MsgId,
-		MediaId:msg.CurrentItem.MediaId,
-		PicURL:msg.CurrentItem.PicUrl,
+		ItemHeader: msg.CurrentItem.ItemHeader,
+		Receiver:   msg.CurrentItem.Receiver,
+		MsgId:      msg.CurrentItem.MsgId,
+		MediaId:    msg.CurrentItem.MediaId,
+		PicURL:     msg.CurrentItem.PicUrl,
 	}
 
 }
-

@@ -22,7 +22,7 @@ import (
 
 // 微信服务器请求 http body
 type RequestHttpBody struct {
-	XMLName      struct {} `xml:"xml" json:"-"`
+	XMLName struct{} `xml:"xml" json:"-"`
 
 	CorpId       string `xml:"ToUserName"`
 	AgentId      int64  `xml:"AgentID"`
@@ -31,7 +31,7 @@ type RequestHttpBody struct {
 
 // ServeHTTP 处理 http 消息请求
 //  NOTE: 调用者保证所有参数有效
-func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, frontend  *MultiChatServerFrontend) {
+func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, frontend *MultiChatServerFrontend) {
 
 	errHandler := frontend.errHandler
 	switch r.Method {
@@ -73,7 +73,6 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, f
 			return
 		}
 
-
 		frontend.rwmutex.RLock()
 		srv := frontend.chatServerMap[requestHttpBody.CorpId]
 		frontend.rwmutex.RUnlock()
@@ -84,10 +83,7 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, f
 			return
 		}
 
-
 		corpId := requestHttpBody.CorpId
-
-
 
 		agentToken := srv.Token()
 
@@ -125,17 +121,12 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, f
 			}
 		}
 
-
-
 		// 解密成功, 解析 MixedMessage
 		var mixedMsg MixedMessage
 		if err = xml.Unmarshal(rawMsgXML, &mixedMsg); err != nil {
 			errHandler.ServeError(w, r, err)
 			return
 		}
-
-
-
 
 		// 成功, 交给 MessageHandler
 		req := &Request{
@@ -152,7 +143,7 @@ func ServeHTTP(w http.ResponseWriter, r *http.Request, queryValues url.Values, f
 			AESKey: aesKey,
 			Random: random,
 
-			CorpId:     corpId,
+			CorpId:    corpId,
 			CorpToken: agentToken,
 		}
 		srv.MessageHandler().ServeMessage(w, req)

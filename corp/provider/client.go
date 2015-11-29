@@ -20,7 +20,7 @@ import (
 
 type Client struct {
 	AccessTokenServer
-	corpid    string
+	corpid     string
 	HttpClient *http.Client
 }
 
@@ -36,7 +36,7 @@ func NewClient(corpid string, srv AccessTokenServer, clt *http.Client) *Client {
 
 	return &Client{
 		AccessTokenServer: srv,
-		corpid:           corpid,
+		corpid:            corpid,
 		HttpClient:        clt,
 	}
 }

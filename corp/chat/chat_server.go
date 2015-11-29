@@ -24,15 +24,15 @@ type ChatServer interface {
 var _ ChatServer = (*DefaultChatServer)(nil)
 
 type DefaultChatServer struct {
-	corpId            string
-	token             string
+	corpId string
+	token  string
 
 	rwmutex           sync.RWMutex
 	currentAESKey     [32]byte // 当前的 AES Key
 	lastAESKey        [32]byte // 最后一个 AES Key
 	isLastAESKeyValid bool     // lastAESKey 是否有效, 如果 lastAESKey 是 zero 则无效
 
-	messageHandler    MessageHandler
+	messageHandler MessageHandler
 }
 
 // NewDefaultChatServer 创建一个新的 DefaultChatServer.
@@ -56,7 +56,6 @@ func NewDefaultChatServer(corpId string, token string, aesKey []byte, handler Me
 func (srv *DefaultChatServer) CorpId() string {
 	return srv.corpId
 }
-
 
 func (srv *DefaultChatServer) Token() string {
 	return srv.token

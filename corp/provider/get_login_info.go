@@ -24,34 +24,31 @@ type AuthInfo struct {
 }
 
 type Agent struct {
-	AgentId  int64   `json:"agentid"`
-	AuthType int64   `json:"auth_type"`
+	AgentId  int64 `json:"agentid"`
+	AuthType int64 `json:"auth_type"`
 }
 
 type AuthInfoDepartment struct {
-	Id       int64  `json:"id"`
-	Writable bool   `json:"writable"`
+	Id       int64 `json:"id"`
+	Writable bool  `json:"writable"`
 }
-
 
 type UserInfo struct {
-	Email  string       `json:"email"`
-	Userid string       `json:"userid"`
-	Name   string       `json:"name"`
-	Avatar string       `json:"avatar"`
-	Mobile string       `json:"mobile"`
+	Email  string `json:"email"`
+	Userid string `json:"userid"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
+	Mobile string `json:"mobile"`
 }
 
-
 type LoginInfo struct {
-	IsInner   bool       `json:"is_inner"`
-	IsSys     bool       `json:"is_sys"`
+	IsInner   bool     `json:"is_inner"`
+	IsSys     bool     `json:"is_sys"`
 	UserInfo  UserInfo `json:"user_info"`
 	CorpInfo  CorpInfo `json:"corp_info"`
 	AgentList []Agent  `json:"agent,omitempty"`
-	AuthInfo  AuthInfo     `json:"auth_info"`
+	AuthInfo  AuthInfo `json:"auth_info"`
 }
-
 
 // 获取企业号管理员登录信息
 //  authCode:  oauth2.0授权企业号管理员登录产生的code .
